@@ -21,27 +21,29 @@ public class KafkaConsumerService {
     @Autowired
     MessageRepository messageRepository;
 
-    private Message msgObject = new Message();
-
-
     @KafkaListener(topics = "banking", groupId = "group_id")
     public void receiveMessageFromDemoTopic(@Payload String message){
         log.info("Message {} received from banking topic", message);
+        Message msgObject = getMessageObject();
         msgObject.setMessage(message);
         msgObject.setMessageReferenceId(UUID.randomUUID().toString());
         msgObject.setMessageType(MessageType.BANKING);
         messageRepository.save(msgObject);
-        log.info("Message {} saved from banking topic", message);
+        log.info("Message {} received from banking topic", message);
     }
 
     @KafkaListener(topics = "finance", groupId = "group_id")
     public void receiveMessageFromPaymentTopic(@Payload ConsumerRecord<String , String> record){
         log.info("Message {} received from finance topic", record.value());
-
+        Message msgObject = getMessageObject();
         msgObject.setMessage(record.value());
         msgObject.setMessageReferenceId(UUID.randomUUID().toString());
         msgObject.setMessageType(MessageType.FINANCIAL);
         messageRepository.save(msgObject);
+    }
+
+    private Message getMessageObject(){
+        return new Message();
     }
 
 }
