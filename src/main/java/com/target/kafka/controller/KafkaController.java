@@ -13,13 +13,6 @@ public class KafkaController {
     @Autowired
     KafkaProducerService kafkaProducerService;
 
-    @PostMapping(value = "/kafka/publish")
-    public void sendMessage(@RequestParam("topic") String topic, @RequestBody String message){
-        kafkaProducerService.publish(topic,message);
-        log.info("sent message {}", message );
-
-    }
-
     @GetMapping(value = "/kafka/publish")
     public void updateMessage(@RequestParam("topic") String topic, @RequestParam String message){
         kafkaProducerService.publish(topic,message);
