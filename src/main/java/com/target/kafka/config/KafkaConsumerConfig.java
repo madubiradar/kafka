@@ -13,7 +13,7 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
-    @Bean
+    //@Bean
     public ConsumerFactory consumerFactory() {
         Map<String, Object> configs = new HashMap<String, Object>();
         configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
