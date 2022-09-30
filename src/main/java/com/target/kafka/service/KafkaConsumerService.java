@@ -41,6 +41,15 @@ public class KafkaConsumerService {
         msgObject.setMessageType(MessageType.FINANCIAL);
         messageRepository.save(msgObject);
     }
+    @KafkaListener(topics = "healthcare", groupId = "group_id")
+    public void receiveMessageFromHealthcareTopic(@Payload ConsumerRecord<String , String> record){
+        log.info("Message {} received from finance topic", record.value());
+        Message msgObject = getMessageObject();
+        msgObject.setMessage(record.value());
+        msgObject.setMessageReferenceId(UUID.randomUUID().toString());
+        msgObject.setMessageType(MessageType.HEALTHCARE);
+        messageRepository.save(msgObject);
+    }
 
     private Message getMessageObject(){
         return new Message();
